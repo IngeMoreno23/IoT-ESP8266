@@ -1,10 +1,10 @@
 # 
 
-## Libraries used
+## Librerias usadas
 
-To create a client, we use Eclipse [paho-mqtt](https://pypi.org/project/paho-mqtt/), where you can install the library and see the documentation on it.
+Para crear un cliente, usamos [Eclipse paho-mqtt](https://pypi.org/project/paho-mqtt/), aqui podrás encontrar la documentación de la libreria y su método de instalación.
 
-We will use this library with:
+Importamos la librería a python con esta linea de código:
 
 `import paho.mqtt.client as paho`
 
