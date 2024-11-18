@@ -13,16 +13,20 @@ void setup() {
   Serial.println("Inicializando...");
 
   connectWifi();
-  initMQTT();
+  initMQTT(mqttClient1, MQTT_CLIENT_NAME_1);
+  initMQTT(mqttClient2, MQTT_CLIENT_NAME_2);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   checkWifiConnection();
-  checkMQTTConnection();
+  checkMQTTConnection(mqttClient1, MQTT_CLIENT_NAME_1);
+  checkMQTTConnection(mqttClient2, MQTT_CLIENT_NAME_2);
 
-  mqttClient.publish("Hola", "Yo soy Mateo");
+  mqttClient1.publish("test/topic", "Hola, yo soy Client1 y me dirijo a mis suscriptores", true);
 
-  handleMQTT();
+  handleMQTT(mqttClient1, MQTT_CLIENT_NAME_1);
+  handleMQTT(mqttClient2, MQTT_CLIENT_NAME_2);
+
   delay(1000);
 }
