@@ -29,16 +29,14 @@ void setup() {
   pinMode(fanPin, OUTPUT);
 
 
-  // connectWifi();
-  // initMQTT();
-  // initMQTT();
+  connectWifi();
+  initMQTT();
 }
 
 void loop() {
   
-  // checkWifiConnection();
-  // checkMQTTConnection();
-  // checkMQTTConnection();
+  checkWifiConnection();
+  checkMQTTConnection();
 
   if(currentTime - previousTime < timeInterval){
     currentTime = millis();
@@ -49,32 +47,28 @@ void loop() {
     getDHT();
     getUltrasonicDistance();
 
-    // if(humidity != NAN && temperature != NAN && distance != NAN){
-    //   doc["MQTT_CLIENT_NAME"] = MQTT_CLIENT_NAME; // Quien es el UPSTREAMER
-    //   doc["humidity"] = humidity;
-    //   doc["temperature"] = temperature;
-    //   doc["distance"] = distance;
-    // }
+    if(humidity != NAN && temperature != NAN && distance != NAN){
+      doc["MQTT_CLIENT_NAME"] = MQTT_CLIENT_NAME; // Quien es el UPSTREAMER
+      doc["humidity"] = humidity;
+      doc["temperature"] = temperature;
+      doc["distance"] = distance;
+    }
 
-    // // Convertimos el objeto a un string y char*
-    // String upstreamPayload;
-    // serializeJson(doc, upstreamPayload);
+    // Convertimos el objeto a un string y char*
+    String upstreamPayload;
+    serializeJson(doc, upstreamPayload);
 
-    // char charUpstreamPayload[upstreamPayload.length() + 1];  // Reserva espacio en la pila para el arreglo
-    // upstreamPayload.toCharArray(charUpstreamPayload, upstreamPayload.length() + 1);  // Copia el String al arreglo charArray
+    char charUpstreamPayload[upstreamPayload.length() + 1];  // Reserva espacio en la pila para el arreglo
+    upstreamPayload.toCharArray(charUpstreamPayload, upstreamPayload.length() + 1);  // Copia el String al arreglo charArray
 
-    // // Subimos el mensaje al broker
+    // Subimos el mensaje al broker
 
-    // mqttClient.publish(UPSTREAM_TOPIC, charUpstreamPayload, true);  // Retained: true
-    simulateActuators();
+    mqttClient.publish(UPSTREAM_TOPIC, charUpstreamPayload, true);  // Retained: true
     updateTrafficLigth();
     updateFan();
-    printSensors();
-    printActuators();
   }
     
   // Recibimos el mensaje del broker y reconectamos
-  // handleMQTT();
-  // handleMQTT();
+  handleMQTT();
   
 }

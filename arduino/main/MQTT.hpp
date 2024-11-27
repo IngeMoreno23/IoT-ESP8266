@@ -57,19 +57,19 @@ void checkMQTTConnection(){
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
-    // Serial.print("Mensaje recibido [");
-    // Serial.print(topic);
-    // Serial.print("]: ");
-    // char message[length+1];
-    // for (int i = 0; i < length; i++) {
-    //     message[i] = (char)payload[i];
-    // }
-    // message[length] = '\0';
-    // Serial.print(message);
-    // Serial.println();
+    Serial.print("Mensaje recibido [");
+    Serial.print(topic);
+    Serial.print("]: ");
+    char message[length+1];
+    for (int i = 0; i < length; i++) {
+        message[i] = (char)payload[i];
+    }
+    message[length] = '\0';
+    Serial.print(message);
+    Serial.println();
 
-    // JsonDocument doc;
-    // deserializeJson(doc, message);
-    // // Do a user check
-    // strcpy(trafficLightState, doc["traffic_light"]);
+    JsonDocument doc;
+    deserializeJson(doc, message);
+    // Do a user check
+    strcpy(trafficLightState, doc["traffic_light"]);
 }

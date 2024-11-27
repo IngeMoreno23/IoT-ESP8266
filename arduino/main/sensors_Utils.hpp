@@ -25,7 +25,7 @@ const int greenPin = D6;
 const int fanPin = D8;
 char trafficLightState[10];
 int fanState;
-
+int errorFlashing = 0;
 
 // Declaraciones de las funciones para leer los sensores
 void getDHT();
@@ -73,22 +73,31 @@ void simulateUltrasonicDistance(){
 
 
 void updateTrafficLigth(){
-  if (strcmp(trafficLightState, "Red") == 0){
+  if (strcmp(trafficLightState, "red") == 0){
     digitalWrite(redPin, HIGH);
     digitalWrite(yellowPin, LOW);
     digitalWrite(greenPin, LOW);
-  } else if (strcmp(trafficLightState, "Yellow") == 0){
+  } else if (strcmp(trafficLightState, "yellow") == 0){
     digitalWrite(redPin, LOW);
     digitalWrite(yellowPin, HIGH);
     digitalWrite(greenPin, LOW);
-  } else if (strcmp(trafficLightState, "Green") == 0){
+  } else if (strcmp(trafficLightState, "green") == 0){
     digitalWrite(redPin, LOW);
     digitalWrite(yellowPin, LOW);
     digitalWrite(greenPin, HIGH);
   } else {
-    digitalWrite(redPin, LOW);
-    digitalWrite(yellowPin, LOW);
-    digitalWrite(greenPin, LOW);
+    if(errorFlashing >= 0){
+      digitalWrite(redPin, LOW);
+      digitalWrite(yellowPin, LOW);
+      digitalWrite(greenPin, LOW);
+      errorFlashing++;
+    } else {
+      digitalWrite(redPin, HIGH);
+      digitalWrite(yellowPin, HIGH);
+      digitalWrite(greenPin, HIGH);
+      errorFlashing--;
+    }
+    
   }
 }
 
