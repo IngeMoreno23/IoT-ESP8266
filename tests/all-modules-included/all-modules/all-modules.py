@@ -3,7 +3,7 @@ import threading
 import json
 import time
 
-MQTT_BROKER_ADRESS: str = "192.168.54.142"
+MQTT_BROKER_ADRESS: str = "192.168.214.142"
 MQTT_BROKER_PORT: int = 1883
 DOWNSTREAM_TOPIC: str = "ESP8266_to_Python/topic"
 UPSTREAM_TOPIC: str = "Python_to_ESP8266/topic"

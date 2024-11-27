@@ -1,4 +1,4 @@
-const char* MQTT_BROKER_ADRESS = "192.168.54.142";
+const char* MQTT_BROKER_ADRESS = "192.168.214.142";
 const uint16_t MQTT_PORT = 1883;
 const char* MQTT_CLIENT_NAME_1 = "ESP8266Client_1";
 const char* MQTT_CLIENT_NAME_2 = "ESP8266Client_2";
