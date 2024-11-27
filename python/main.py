@@ -183,10 +183,10 @@ def on_message(client, userdata, message):
     global localData
     if message.topic == DOWNSTREAM_TOPIC:
         data = json.loads(str(message.payload.decode("utf-8")))
-        if data["MQTT_CLIENT_NAME"] == "ESP8266Client_1":
-            localData["ESP8266Client_1"]["humidity"]    = data["humidity"]
-            localData["ESP8266Client_1"]["temperature"] = data["temperature"]
-            localData["ESP8266Client_1"]["distance"]    = data["distance"]
+        if data["MQTT_CLIENT_NAME"] != None:
+            localData[data["MQTT_CLIENT_NAME"]]["humidity"]    = data["humidity"]
+            localData[data["MQTT_CLIENT_NAME"]]["temperature"] = data["temperature"]
+            localData[data["MQTT_CLIENT_NAME"]]["distance"]    = data["distance"]
 
 
 def on_publish(client, userdata, mid, rc, properties=None):
@@ -233,7 +233,7 @@ def traffic_light_publisher(client):
         else: # Its red
             
             if current_time - last_state_change <= traffic_light_red_time*traffic_light_current_multiplier and traffic_light_current_multiplier <= traffic_light_max_multiplier:
-                if current_time - last_state_change >= traffic_light_red_time*traffic_light_current_multiplier-3 and any(int(data["distance"]) < sensor_threshold and int(data["distance"]) != 0 for client_, data in localData.items()):
+                if current_time - last_state_change >= traffic_light_red_time*traffic_light_current_multiplier-3 and any((data.get("distance") is not None and int(data["distance"]) < sensor_threshold and int(data["distance"]) != 0) for client_, data in localData.items()):
                     # Una persona esta cerca en los ultimos segundo y todavia no se alcanza el tiempo maximo}
                     traffic_light_current_multiplier += 1
             else: # time up
