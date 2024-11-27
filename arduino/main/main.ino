@@ -70,5 +70,4 @@ void loop() {
     
   // Recibimos el mensaje del broker y reconectamos
   handleMQTT();
-  
 }

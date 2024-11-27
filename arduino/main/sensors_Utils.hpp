@@ -24,7 +24,7 @@ const int greenPin = D6;
 
 const int fanPin = D8;
 char trafficLightState[10];
-int fanState;
+char fanState[2];
 int errorFlashing = 0;
 
 // Declaraciones de las funciones para leer los sensores
@@ -95,16 +95,20 @@ void updateTrafficLigth(){
       digitalWrite(redPin, HIGH);
       digitalWrite(yellowPin, HIGH);
       digitalWrite(greenPin, HIGH);
-      errorFlashing--;
+      errorFlashing--;  
     }
     
   }
 }
 
 void updateFan(){
-  if (fanState == 1){
+  if (strcmp(fanState, "1") == 0){
+    Serial.print("Hola me estoy prendiendo: ");
+    Serial.println(fanState);
     digitalWrite(fanPin, HIGH);
   } else {
+    Serial.print("Hola me estoy apagando: ");
+    Serial.println(fanState);
     digitalWrite(fanPin, LOW);
   }
 }
@@ -112,9 +116,9 @@ void updateFan(){
 void simulateActuators(){
   int randomState = random(0, 5);
   if (randomState % 2 == 0){
-    fanState = 0;
+    strcpy(fanState, "0");
   } else {
-    fanState = 1;
+    strcpy(fanState, "1");
   }
   if (randomState % 3 == 0){
     strcpy(trafficLightState, "Red");

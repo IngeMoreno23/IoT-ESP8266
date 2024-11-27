@@ -5,7 +5,7 @@ import threading
 import json
 import time
 
-MQTT_BROKER_ADRESS: str = "192.168.214.142"
+MQTT_BROKER_ADRESS: str = "192.168.35.142"
 MQTT_BROKER_PORT: int = 1883
 DOWNSTREAM_TOPIC: str = "ESP8266_to_Python/topic"
 UPSTREAM_TOPIC: str = "Python_to_ESP8266/topic"
@@ -205,21 +205,25 @@ def traffic_light_publisher(client):
     previous_time: float = 0
     time_interval: float = 1
 
-    last_state_change: float = 0
+    current_fan_state: str = "0"
+
     current_state: str = "green"
+    last_state_change: float = 0
     sensor_threshold: int = 10
     traffic_light_yellow_time: float = 2
     traffic_light_red_time: float = 5
     traffic_light_current_multiplier: int = 1
     traffic_light_max_multiplier: int = 3
     traffic_light_cooldown: float = 5 # seconds
-    traffic_light_response = {"MQTT_CLIENT_NAME": "ESP8266Client_2", "traffic_light": current_state}
+    traffic_light_response = {"traffic_light": current_state, "fan_state": current_fan_state}
 
     global localData
     global apprun
     while apprun:
         client.loop()
         print("Local data: ", localData)
+
+        # Logica del semaforo
         if current_state == "green":
             if current_time - last_state_change >= traffic_light_cooldown and any((data.get("distance") is not None and int(data["distance"]) < sensor_threshold and int(data["distance"]) != 0) for client_, data in localData.items()):
                 current_state = "yellow"
@@ -242,7 +246,15 @@ def traffic_light_publisher(client):
                 last_state_change = current_time
                 traffic_light_current_multiplier = 1
 
+        # L+ogica del abanico
+        if any((data["temperature"] is not None and data["temperature"] > 28) for client_, data in localData.items()):
+            current_fan_state = "1"
+            traffic_light_response["fan_state"] = current_fan_state
+        else :
+            current_fan_state = "0"
+            traffic_light_response["fan_state"] = current_fan_state
 
+        # Lógica del publicadoe
         if current_time - previous_time < time_interval:
             current_time = time.time()
         else:

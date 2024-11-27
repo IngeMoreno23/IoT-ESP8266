@@ -1,4 +1,4 @@
-const char* MQTT_BROKER_ADRESS = "192.168.214.142";
+const char* MQTT_BROKER_ADRESS = "192.168.35.142";
 const uint16_t MQTT_PORT = 1883;
 String MQTT_CLIENT_BASE = "ESP8266Client_";
 String mqttClientName = (MQTT_CLIENT_BASE) + MICROCONTROLLER_NUMBER;
@@ -70,6 +70,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
     JsonDocument doc;
     deserializeJson(doc, message);
-    // Do a user check
+    // Get data prom payload - doc
     strcpy(trafficLightState, doc["traffic_light"]);
+    strcpy(fanState, doc["fan_state"]);
 }
